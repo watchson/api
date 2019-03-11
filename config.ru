@@ -1,4 +1,5 @@
-require 'rubygems'
-require './watchson/health_controller'
+# This file is used by Rack-based servers to start the application.
 
-run Sinatra::Base
+require "jets"
+Jets.boot
+run Jets.application
