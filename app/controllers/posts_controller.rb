@@ -3,44 +3,30 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.scan
 
     render json: @posts
   end
 
-  # GET /posts/1
   def show
     render json: @post
   end
 
-  # POST /posts
   def create
-    @post = Post.new(post_params)
+    body = params.to_enum.to_h.map { |k, v| [k.to_sym, v] }.to_h
 
-    if @post.save
-      render json: @post, status: :created
-    else
-      render json: @post.errors, status: :unprocessable_entity
-    end
+    @post = Post.new(body)
+    @post.replace
+
+    render json: @post, status: :created
   end
 
-  # PATCH/PUT /posts/1
-  def update
-    if @post.update(post_params)
-      render json: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /posts/1
   def delete
     @post.destroy
     render json: {deleted: true}
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
     end

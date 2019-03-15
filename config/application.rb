@@ -3,6 +3,7 @@ Jets.application.configure do
   config.mode = "api"
 
   config.prewarm.enable = true # default is true
+  config.iam_policy = ["dynamodb:*"]
   # config.prewarm.rate = '30 minutes' # default is '30 minutes'
   # config.prewarm.concurrency = 2 # default is 2
   # config.prewarm.public_ratio = 3 # default is 3
