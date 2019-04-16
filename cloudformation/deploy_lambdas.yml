@@ -1,4 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  CodeFilename:
+    Type: String
+    Default: watchson_api.zip
+
 Resources:
 
   WatchsonApiExecutionRole:
@@ -31,7 +36,7 @@ Resources:
           - "Arn"
       Code:
         S3Bucket: "watchson-api-deploy-bucket"
-        S3Key: "watchson_api.zip"
+        S3Key: !Ref "CodeFilename"
       Runtime: "ruby2.5"
       Timeout: 25
       TracingConfig:
