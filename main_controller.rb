@@ -3,7 +3,7 @@ require_relative 'app/controllers/time_controller'
 
 def register_controllers
     @controllers = {}
-    @controllers["/api"] = TimeController.get_instance
+    @controllers["/api/time"] = TimeController.get_instance
 end
 
 def get_controller(path)
