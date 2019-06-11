@@ -1,7 +1,23 @@
 require 'json'
+require_relative 'app/controllers/time_controller'
 
-def handle_request(event:, context:)
-    # { event: JSON.generate(event), context: JSON.generate(context.inspect) }
-    { statusCode: 200, body: JSON.generate(event) }
+def register_controllers
+    @controllers = {}
+    @controllers["/api"] = TimeController.get_instance
 end
 
+def get_controller(path)
+    if @controllers.nil?
+        register_controllers
+    end
+
+    @controllers[path]
+end
+
+def handle_request(event:, context:)
+    controller = get_controller(event["path"])
+
+    controller.nil? ?
+        { statusCode: 404 } :
+        controller.handle_request(event, context)
+end
