@@ -19,7 +19,7 @@ Resources:
       Policies:
       - PolicyDocument:
           Statement:
-          - Action: ['cloudwatch:*', 'logs:*', 'xray:*']
+          - Action: ['cloudwatch:*', 'logs:*', 'xray:*', 'dynamodb:*']
             Effect: Allow
             Resource: '*'
           Version: '2012-10-17'

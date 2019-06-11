@@ -38,7 +38,7 @@ check_deploy_status:
 		--max-items 1 \
 		--profile watchson
 
-deploy: deploy_upload_artifact deploy_lambda delete_upload_artifact
+deploy: deploy_upload_artifact deploy_lambda
 	echo "Lambda Deployed as $(bundle_name)"
 
 create_bucket:

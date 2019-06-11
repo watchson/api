@@ -11,3 +11,5 @@ group :test do
   gem 'launchy'
   gem 'capybara'
 end
+
+gem 'aws-sdk-dynamodb'
