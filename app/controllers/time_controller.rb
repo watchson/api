@@ -1,8 +1,7 @@
-class TimeController
+require 'singleton'
 
-    def self.get_instance
-        TimeController.new
-    end
+class TimeController
+    include Singleton
 
     def handle_request(event, context)
         { statusCode: 200, body: JSON.generate(event) }

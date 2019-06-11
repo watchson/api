@@ -16,7 +16,10 @@ deploy_upload_artifact: build_lambda
 		s3://watchson-api-deploy-bucket \
 		--profile watchson
 
-delete_upload_artifact: build_lambda
+wait:
+	sleep 15
+
+delete_upload_artifact: build_lambda wait
 	aws s3 rm \
 		s3://watchson-api-deploy-bucket/$(bundle_name) \
 		--profile watchson
