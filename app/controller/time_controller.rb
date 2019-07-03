@@ -12,12 +12,16 @@ class TimeController
     def handle_request(event, context)
         http_method = event["httpMethod"]
 
-        case http_method
-        when "POST"
-            add_time(JSON.parse(event["body"], symbolize_names: true))
-            { statusCode: 200 }
-        else
-            { statusCode: 501 }
+        begin
+            case http_method
+            when "POST"
+                add_time(JSON.parse(event["body"], symbolize_names: true))
+                { statusCode: 201 }
+            else
+                { statusCode: 501 }
+            end
+        rescue ArgumentError => error
+            { statusCode: 500, body: error.message }
         end
     end
 
