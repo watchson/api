@@ -5,13 +5,8 @@ require_relative '../repository/time_repository'
 class TimeController
     include Singleton
 
-    def add_time(body)
-        puts "Received request=#{body} to add time"
-        TimeRepository.instance.add_time(body[:user_id],
-                                         body[:registered_date],
-                                         body[:is_holiday],
-                                         body[:is_leave],
-                                         body[:comments])
+    def initialize(time_repository = nil)
+        @time_repository = time_repository.nil? ? TimeRepository.instance : time_repository
     end
 
     def handle_request(event, context)
@@ -25,4 +20,17 @@ class TimeController
             { statusCode: 501 }
         end
     end
+
+    private
+
+    def add_time(body)
+        puts "Received request=#{body} to add time"
+        @time_repository.add_time(body[:user_id],
+                                  body[:registered_date],
+                                  body[:is_holiday],
+                                  body[:is_leave],
+                                  body[:comments])
+    end
+
+
 end
