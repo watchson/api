@@ -22,6 +22,8 @@ class TimeRepository < BaseRepository
         updated_at: now
     }
 
+    item.delete_if {|_, value| value.nil? }
+
     puts "Adding item=#{item}"
     save(item)
   end

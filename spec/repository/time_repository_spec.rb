@@ -22,6 +22,21 @@ describe TimeRepository, "TimeRepository" do
       end
     end
 
+    it "save without comments" do
+      @time_repository.add_time("potato", "2019-01-01 01:02:03", false, true, nil)
+
+      expect(@dynamo_db).to have_received(:put_item) do |arg|
+        expect(arg[:table_name]).to eq("Time")
+        expect(arg[:item][:user_id]).to eq("potato")
+        expect(arg[:item][:registered_date]).to eq("2019-01-01 01:02:03")
+        expect(arg[:item][:is_holiday]).to be_falsey
+        expect(arg[:item][:is_leave]).to be_truthy
+        expect(arg[:item][:created_at]).to be_truthy
+        expect(arg[:item][:updated_at]).to be_truthy
+        expect(arg[:item]).not_to have_key(:comments)
+      end
+    end
+
     it "when DynamoDB throws error" do
       allow(@dynamo_db).to receive(:put_item).and_raise(ArgumentError.new)
 
