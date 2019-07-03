@@ -6,5 +6,7 @@ env:
 
 before_install:
   - pip install --user awscli
+  - gem update --system
+  - gem install bundler
 
 script: make deploy
