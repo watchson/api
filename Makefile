@@ -13,30 +13,26 @@ build_lambda: clean build_lambda_dependencies
 deploy_upload_artifact: build_lambda
 	aws s3 cp \
 		build/$(bundle_name) \
-		s3://watchson-api-deploy-bucket \
-		--profile watchson
+		s3://watchson-api-deploy-bucket
 
 wait:
 	sleep 15
 
 delete_upload_artifact: build_lambda wait
 	aws s3 rm \
-		s3://watchson-api-deploy-bucket/$(bundle_name) \
-		--profile watchson
+		s3://watchson-api-deploy-bucket/$(bundle_name)
 
 deploy_lambda:
 	aws cloudformation update-stack \
 		--stack-name watchsonApiLambdaDeploy \
 		--template-body file://$(PWD)/cloudformation/deploy_lambdas.yml \
 		--capabilities CAPABILITY_NAMED_IAM \
-		--parameters ParameterKey=CodeFilename,ParameterValue=$(bundle_name) \
-		--profile watchson
+		--parameters ParameterKey=CodeFilename,ParameterValue=$(bundle_name)
 
 check_deploy_status:
 	aws cloudformation describe-stack-events \
 		--stack-name watchsonApiLambdaDeploy \
-		--max-items 1 \
-		--profile watchson
+		--max-items 1
 
 deploy: deploy_upload_artifact deploy_lambda
 	echo "Lambda Deployed as $(bundle_name)"
@@ -44,5 +40,4 @@ deploy: deploy_upload_artifact deploy_lambda
 create_bucket:
 	aws cloudformation create-stack \
 		--stack-name watchsonApiBucketDeploy \
-		--template-body file://$(PWD)/cloudformation/create-bucket.yml \
-		--profile watchson
+		--template-body file://$(PWD)/cloudformation/create-bucket.yml
