@@ -1,5 +1,5 @@
 lang: ruby
-rvm: 2.1
+rvm: 2.6
 env:
   global:
     - PATH=$HOME/.local/bin:$PATH
