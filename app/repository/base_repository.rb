@@ -1,7 +1,7 @@
 class BaseRepository
 
-  def initialize
-    @dynamo_db = Aws::DynamoDB::Client.new(region: 'us-west-2')
+  def initialize(dynamo_db=nil)
+    @dynamo_db = dynamo_db.nil? ? Aws::DynamoDB::Client.new(region: 'us-west-2') : dynamo_db
   end
 
   def save(item)
