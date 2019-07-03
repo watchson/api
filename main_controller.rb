@@ -1,5 +1,5 @@
 require 'json'
-require_relative 'app/controllers/time_controller'
+require_relative 'app/controller/time_controller'
 
 def register_controllers
     @controllers = {}
