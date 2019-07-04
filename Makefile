@@ -41,3 +41,6 @@ create_bucket:
 	aws cloudformation create-stack \
 		--stack-name watchsonApiBucketDeploy \
 		--template-body file://$(PWD)/cloudformation/create-bucket.yml
+
+test:
+	bundle exec rake spec
