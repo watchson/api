@@ -14,9 +14,12 @@ class TimeController
 
         begin
             case http_method
-            when "POST"
+            when "PUT"
                 add_time(JSON.parse(event["body"], symbolize_names: true))
                 { statusCode: 201 }
+            when "PATCH"
+                update_time(JSON.parse(event["body"], symbolize_names: true))
+                { statusCode: 200 }
             else
                 { statusCode: 501 }
             end
@@ -34,6 +37,15 @@ class TimeController
                                   body[:is_holiday],
                                   body[:is_leave],
                                   body[:comments])
+    end
+
+    def update_time(body)
+        puts "Received request=#{body} to update time"
+        @time_repository.update_time(body[:user_id],
+                                     body[:registered_date],
+                                     body[:is_holiday],
+                                     body[:is_leave],
+                                     body[:comments])
     end
 
 
