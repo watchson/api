@@ -10,12 +10,38 @@ class BaseRepository
         item: item
     }
 
-    begin
+    execute do
       puts "Saving item=#{item}"
       @dynamo_db.put_item(params)
       puts "Saved item=#{item} on #{table_name}"
+    end
+  end
+
+  def search_item(hash_key_name, hash_key, range_key_name=nil, range_key=nil)
+    params = {
+        table_name: table_name,
+        key: {
+            hash_key_name => hash_key,
+        }
+    }
+    if range_key_name && range_key
+      params[:key][range_key_name] = range_key
+    end
+
+    execute do
+      result = @dynamo_db.get_item(params)
+      puts "Found #{table_name}=#{result.item}"
+      result.item
+    end
+  end
+
+  private
+
+  def execute
+    begin
+      yield
     rescue  Aws::DynamoDB::Errors::ServiceError => error
-      message = "Unable to save item=#{item} on table=#{table_name} with error=#{error.message}"
+      message = "Unable to execute action table=#{table_name} with error=#{error.message}"
       puts message
       raise ArgumentError, message
     end
