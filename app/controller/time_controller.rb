@@ -20,6 +20,9 @@ class TimeController
             when "PATCH"
                 update_time(JSON.parse(event["body"], symbolize_names: true))
                 { statusCode: 200 }
+            when "GET"
+                { statusCode: 200, body: JSON.generate(event) }
+                { statusCode: 200, body: list_items(event["queryStringParameters"])}
             else
                 { statusCode: 501 }
             end
@@ -48,5 +51,11 @@ class TimeController
                                      body[:comments])
     end
 
+    def list_items(query_parameters)
+        puts "Received request=#{path} to list items"
+        @time_repository.list_items(query_parameters[:user_id],
+                                    query_parameters[:start_date],
+                                    query_parameters[:end_date])
+    end
 
 end

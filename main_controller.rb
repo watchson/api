@@ -3,7 +3,7 @@ require_relative 'app/controller/time_controller'
 
 def register_controllers
     @controllers = {}
-    @controllers["/api/time"] = TimeController.instance
+    @controllers["\/api\/time"] = TimeController.instance
 end
 
 def get_controller(path)
@@ -11,7 +11,9 @@ def get_controller(path)
         register_controllers
     end
 
-    @controllers[path]
+    @controllers.select {|key, _| key.match?(path) }
+                .map {|value| value[1]}
+                .first
 end
 
 def handle_request(event:, context:)
