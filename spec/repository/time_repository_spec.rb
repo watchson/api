@@ -81,6 +81,31 @@ describe TimeRepository, "TimeRepository" do
       end
     end
 
+    it "search items" do
+      params = {
+          table_name: "Time",
+          key_condition_expression: "user_id = :user_id and registered_date between :start_date and :end_date",
+          expression_attribute_values: {
+              ":user_id" => "potato",
+              ":start_date" => "2019-01-01 01:02:03",
+              ":end_date" => "2019-01-01 10:02:03",
+          }
+      }
+
+      item = {
+          "user_id": "potato",
+          registered_date: "2000-01-01 01:02:03",
+          is_holiday: true,
+          is_leave: false
+      }
+      result = double(:items => [item])
+      allow(@dynamo_db).to receive(:query).with(params) { result }
+
+      items = @time_repository.list_times("potato", "2019-01-01 01:02:03", "2019-01-01 10:02:03")
+
+      expect(items).to eq([item])
+    end
+
     it "when DynamoDB throws error" do
       allow(@dynamo_db).to receive(:put_item).and_raise(ArgumentError.new)
 

@@ -43,6 +43,16 @@ class TimeRepository < BaseRepository
     save(item)
   end
 
+  def list_times(user_id, start_date, end_date)
+    params = {
+        ":user_id" => user_id,
+        ":start_date" => start_date,
+        ":end_date" => end_date,
+    }
+
+    query("user_id = :user_id and registered_date between :start_date and :end_date", params)
+  end
+
   private
 
   def now
