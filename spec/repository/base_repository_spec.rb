@@ -48,7 +48,26 @@ describe BaseRepository, "BaseRepository" do
       ret = @base_repository.search_item("batata", "frita", "sem", "sal")
 
       expect(ret[:batata]).to eq("frita")
-     end
+    end
+
+    it "find with expression" do
+      params = {
+          table_name: "BatataTable",
+          key_condition_expression: "name = :name_param",
+          expression_attribute_values: {
+              ":name_param" => "batata"
+          }
+      }
+
+      result = double(:items => { "batata": "frita" })
+      allow(@dynamo_db).to receive(:query).with(params) { result }
+
+      ret = @base_repository.query("name = :name_param", { ":name_param" => "batata" })
+
+      expect(ret[:batata]).to eq("frita")
+
+    end
+
   end
 
 end

@@ -35,6 +35,18 @@ class BaseRepository
     end
   end
 
+  def query(key_condition, values)
+    params = {
+        table_name: table_name,
+        key_condition_expression: key_condition,
+        expression_attribute_values: values
+    }
+
+    puts "Querying Dynamo with params=#{params}"
+    result = @dynamo_db.query(params)
+    result.items
+  end
+
   private
 
   def execute
