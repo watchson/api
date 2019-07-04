@@ -11,7 +11,6 @@ class TimeRepository < BaseRepository
   end
 
   def add_time(user_id, registered_date, is_holiday, is_leave, comments)
-    now = Time.now.strftime("%Y-%m-%d %H:%M:%S")
     item = {
         user_id: user_id,
         registered_date: registered_date,
@@ -26,6 +25,28 @@ class TimeRepository < BaseRepository
 
     puts "Adding item=#{item}"
     save(item)
+  end
+
+  def update_time(user_id, registered_date, is_holiday=nil, is_leave=nil, comments=nil)
+    puts "Received request=[#{user_id} - #{registered_date}] to update Time"
+
+    item = search_item("user_id", user_id, "registered_date", registered_date)
+    puts "Found item=#{item}"
+
+    item[:registered_date] = registered_date
+    item[:is_holiday] = is_holiday unless is_holiday.nil?
+    item[:is_leave] = is_leave unless is_leave.nil?
+    item[:comments] = comments unless  comments.nil?
+    item[:updated_at] = now
+
+    puts "Saving updated item=#{item}"
+    save(item)
+  end
+
+  private
+
+  def now
+    Time.now.strftime("%Y-%m-%d %H:%M:%S")
   end
 
 end
