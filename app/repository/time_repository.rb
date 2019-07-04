@@ -36,7 +36,7 @@ class TimeRepository < BaseRepository
     item[:registered_date] = registered_date
     item[:is_holiday] = is_holiday unless is_holiday.nil?
     item[:is_leave] = is_leave unless is_leave.nil?
-    item[:comments] = comments unless  comments.nil?
+    item[:comments] = comments unless comments.nil?
     item[:updated_at] = now
 
     puts "Saving updated item=#{item}"
@@ -56,7 +56,7 @@ class TimeRepository < BaseRepository
   private
 
   def now
-    Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    Time.now.to_i
   end
 
 end
