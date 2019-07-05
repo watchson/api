@@ -77,4 +77,39 @@ describe TimeController, "TimeController" do
       expect(response[:body]).to eq("Error Message")
     end
   end
+
+  context "received a GET request" do
+    before(:each) do
+      @time_repository = double(:list_times => nil)
+      @time_controller = TimeController.send :new, @time_repository
+      @event = {
+          "httpMethod" => "GET",
+          "queryStringParameters" => {"user_id" => "potato", "start_date" => "123", "end_date" => "456"}
+      }
+    end
+
+    it "return 200 as response" do
+      response = @time_controller.handle_request(@event, nil)
+
+      expect(response[:statusCode]).to eq(200)
+    end
+
+    it "return times" do
+      time = {"user_id": "dawson"}
+      allow(@time_repository).to receive(:list_times).with("potato", "123", "456") { [time] }
+
+      response = @time_controller.handle_request(@event, nil)
+
+      expect(response[:body]).to eq([time].to_json)
+    end
+
+    it "return 500 when repository fails" do
+      allow(@time_repository).to receive(:list_times).and_raise(ArgumentError.new("Error Message"))
+
+      response = @time_controller.handle_request(@event, nil)
+
+      expect(response[:statusCode]).to eq(500)
+      expect(response[:body]).to eq("Error Message")
+    end
+  end
 end
