@@ -28,7 +28,7 @@ describe TimeController, "TimeController" do
     end
   end
 
-  context "received a GET request" do
+  context "received a get operation request" do
     before(:each) do
       @time_repository = double(:list_times => nil)
       @time_controller = TimeController.send :new, @time_repository
