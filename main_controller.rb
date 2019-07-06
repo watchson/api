@@ -20,5 +20,31 @@ def handle_request(event:, context:)
 
     controller.nil? ?
         { statusCode: 404 } :
-        controller.handle_request(event, context)
+        call_controller(event, controller)
+end
+
+private
+
+def call_controller(event, controller)
+    http_method = event["httpMethod"]
+
+    begin
+        case http_method
+        when "PUT"
+            controller.add_operation(JSON.parse(event["body"], symbolize_names: true))
+            { statusCode: 201 }
+        when "PATCH"
+            controller.update_operation(JSON.parse(event["body"], symbolize_names: true))
+            { statusCode: 200 }
+        when "GET"
+            path_parameters = event["pathParameters"].transform_keys(&:to_sym)
+            query_string_parameters = event["queryStringParameters"].transform_keys(&:to_sym)
+            body = controller.get_operation(path_parameters, query_string_parameters).to_json
+            { statusCode: 200, body: body}
+        else
+            { statusCode: 501 }
+        end
+    rescue ArgumentError => error
+        { statusCode: 500, body: error.message }
+    end
 end
