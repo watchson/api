@@ -84,7 +84,8 @@ describe TimeController, "TimeController" do
       @time_controller = TimeController.send :new, @time_repository
       @event = {
           "httpMethod" => "GET",
-          "queryStringParameters" => {"user_id" => "potato", "start_date" => "123", "end_date" => "456"}
+          "pathParameters" => {"user_id" => "potato"},
+          "queryStringParameters" => {"start_date" => "123", "end_date" => "456"}
       }
     end
 

@@ -35,4 +35,4 @@ Payload:
 ### GET
 **Retrieve the times between a date range**
 
-`/api/time?user_id=dawsonfi&start_date=1562288422&end_date=1562364022`
+`/api/time/potato?start_date=1562288422&end_date=1562364022`

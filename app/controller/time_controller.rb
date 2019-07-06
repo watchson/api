@@ -15,13 +15,14 @@ class TimeController
         begin
             case http_method
             when "PUT"
-                add_time(JSON.parse(event["body"], symbolize_names: true))
+                add_operation(JSON.parse(event["body"], symbolize_names: true))
                 { statusCode: 201 }
             when "PATCH"
-                update_time(JSON.parse(event["body"], symbolize_names: true))
+                update_operation(JSON.parse(event["body"], symbolize_names: true))
                 { statusCode: 200 }
             when "GET"
-                { statusCode: 200, body: list_times(event["queryStringParameters"]).to_json}
+                body = get_operation(event["pathParameters"], event["queryStringParameters"]).to_json
+                { statusCode: 200, body: body}
             else
                 { statusCode: 501 }
             end
@@ -32,7 +33,7 @@ class TimeController
 
     private
 
-    def add_time(body)
+    def add_operation(body)
         puts "Received request=#{body} to add time"
         @time_repository.add_time(body[:user_id],
                                   body[:registered_date],
@@ -41,7 +42,7 @@ class TimeController
                                   body[:comments])
     end
 
-    def update_time(body)
+    def update_operation(body)
         puts "Received request=#{body} to update time"
         @time_repository.update_time(body[:user_id],
                                      body[:registered_date],
@@ -50,9 +51,9 @@ class TimeController
                                      body[:comments])
     end
 
-    def list_times(query_parameters)
-        puts "Received request=#{query_parameters} to list items"
-        @time_repository.list_times(query_parameters["user_id"],
+    def get_operation(path_parameters, query_parameters)
+        puts "Received request=[#{path_parameters} - #{query_parameters}] to list items"
+        @time_repository.list_times(path_parameters["user_id"],
                                     query_parameters["start_date"],
                                     query_parameters["end_date"])
     end
