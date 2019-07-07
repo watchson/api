@@ -1,10 +1,13 @@
 require 'json'
 require_relative 'app/controller/time_controller'
+require_relative 'app/controller/user_preferences_controller'
 
 def register_controllers
     @controllers = {}
     @controllers["/api/time"] = TimeController.instance
     @controllers["/api/time/{user_id}"] = TimeController.instance
+    @controllers["/api/user_preferences"] = UserPreferencesController.instance
+    @controllers["/api/user_preferences/{user_id}"] = UserPreferencesController.instance
 end
 
 def get_controller(resource)

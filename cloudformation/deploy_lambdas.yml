@@ -86,6 +86,20 @@ Resources:
       ParentId: !Ref WatchsonApiTimeResource
       PathPart: "{user_id}"
 
+  WatchsonApiUserPreferencesResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "WatchsonApi"
+      ParentId: !Ref WatchsonApiBaseResource
+      PathPart: "user_preferences"
+
+  WatchsonApiUserPreferencesUserIdResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "WatchsonApi"
+      ParentId: !Ref WatchsonApiUserPreferencesResource
+      PathPart: "{user_id}"
+
   # Methods
   WatchsonApiBaseANYMethod:
     Type: AWS::ApiGateway::Method
@@ -116,6 +130,30 @@ Resources:
     Properties:
       RestApiId: !Ref WatchsonApi
       ResourceId: !Ref WatchsonApiTimeUserIdResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchsonApiLambda.Arn}/invocations
+
+  WatchsonApiUserPreferencesANYMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref WatchsonApi
+      ResourceId: !Ref WatchsonApiUserPreferencesResource
+      HttpMethod: ANY
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchsonApiLambda.Arn}/invocations
+
+  WatchsonApiUserPreferencesUserIdGETMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref WatchsonApi
+      ResourceId: !Ref WatchsonApiUserPreferencesUserIdResource
       HttpMethod: GET
       AuthorizationType: NONE
       Integration:
