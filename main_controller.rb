@@ -40,8 +40,8 @@ def call_controller(event, controller)
             controller.update_operation(JSON.parse(event["body"], symbolize_names: true))
             { statusCode: 200 }
         when "GET"
-            path_parameters = event["pathParameters"].transform_keys(&:to_sym)
-            query_string_parameters = event["queryStringParameters"].transform_keys(&:to_sym)
+            path_parameters = event["pathParameters"].transform_keys(&:to_sym) unless event["pathParameters"].nil?
+            query_string_parameters = event["queryStringParameters"].transform_keys(&:to_sym) unless event["queryStringParameters"].nil?
             body = controller.get_operation(path_parameters, query_string_parameters).to_json
             { statusCode: 200, body: body}
         else
