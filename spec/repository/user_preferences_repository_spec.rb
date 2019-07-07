@@ -27,7 +27,9 @@ describe UserPreferencesRepository, "UserPreferencesRepository" do
       }
       allow(@dynamo_db).to receive(:get_item).with(params) { double(:item =>  @user_preferences) }
 
-      @user_preferences_repository.save_user_preferences(@user_preferences)
+      ret = @user_preferences_repository.get_user_preferences("batata")
+
+      expect(ret).to eq(@user_preferences)
     end
 
   end
