@@ -60,6 +60,7 @@ Resources:
             Method: ANY
 
 Outputs:
-  WatchsonApi:
+  WatchsonApiUrl:
     Description: "API Gateway endpoint URL for Prod stage for Watchson Api Function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+    Export : { "Name" : {"Fn::Sub": "${AWS::StackName}-url" }}

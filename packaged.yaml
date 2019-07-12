@@ -32,7 +32,7 @@ Resources:
   WatchsonApiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://watchson-api-deploy-bucket/1f1fe5886c6717893b08c708cd241d1c
+      CodeUri: s3://watchson-api-deploy-bucket/2bed28814cbd7948dbc0e326825bbef4
       Handler: main_controller.handle_request
       Runtime: ruby2.5
       MemorySize: 512
@@ -63,7 +63,10 @@ Resources:
             Path: /api/user_preferences/{user_id}
             Method: ANY
 Outputs:
-  WatchsonApi:
+  WatchsonApiUrl:
     Description: API Gateway endpoint URL for Prod stage for Watchson Api Function
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-url
