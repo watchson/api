@@ -1,46 +1,19 @@
-NOW := $(shell date +%s)
-bundle_name = "watchson_api_$(NOW).zip"
-
 clean:
 	rm -f build/*.zip
 
-build_lambda_dependencies:
+runtest:
+	bundle exec rake spec
+
+build_dependencies:
 	bundle install --path build/dependencies
 
-build_lambda: clean build_lambda_dependencies
-	zip -r build/$(bundle_name) main_controller.rb app build/dependencies
+build_lambda:
+	zip -r "build/watchson_api.zip" main_controller.rb app build/dependencies
 
-deploy_upload_artifact: build_lambda
-	aws s3 cp \
-		build/$(bundle_name) \
-		s3://watchson-api-deploy-bucket
+release: clean build_dependencies runtest build_lambda
 
-wait:
-	sleep 15
+package: release
+	sam package  --output-template-file packaged.yaml --s3-bucket watchson-api-deploy-bucket
 
-delete_upload_artifact: build_lambda wait
-	aws s3 rm \
-		s3://watchson-api-deploy-bucket/$(bundle_name)
-
-deploy_lambda:
-	aws cloudformation update-stack \
-		--stack-name watchsonApiLambdaDeploy \
-		--template-body file://$(PWD)/cloudformation/deploy_lambdas.yml \
-		--capabilities CAPABILITY_NAMED_IAM \
-		--parameters ParameterKey=CodeFilename,ParameterValue=$(bundle_name)
-
-check_deploy_status:
-	aws cloudformation describe-stack-events \
-		--stack-name watchsonApiLambdaDeploy \
-		--max-items 1
-
-deploy: deploy_upload_artifact deploy_lambda
-	echo "Lambda Deployed as $(bundle_name)"
-
-create_bucket:
-	aws cloudformation create-stack \
-		--stack-name watchsonApiBucketDeploy \
-		--template-body file://$(PWD)/cloudformation/create-bucket.yml
-
-test:
-	bundle exec rake spec
+deploy: package
+	sam deploy --template-file packaged.yaml --stack-name watchson-api --capabilities CAPABILITY_NAMED_IAM

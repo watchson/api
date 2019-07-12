@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Watchson Api
+  Sample SAM Template for watchson-api
+
+Resources:
+  WatchsonApiFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [lambda.amazonaws.com]
+        Version: '2012-10-17'
+      Policies:
+      - PolicyDocument:
+          Statement:
+          - Action: ['cloudwatch:*', 'logs:*', 'xray:*', 'dynamodb:*']
+            Effect: Allow
+            Resource: '*'
+          Version: '2012-10-17'
+        PolicyName: lambdaRoleAPIG
+      RoleName: WatchsonApiExecutionRole
+
+  WatchsonApiFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: build/watchson_api.zip
+      Handler: main_controller.handle_request
+      Runtime: ruby2.5
+      MemorySize: 512
+      Timeout: 25
+      Role:
+        Fn::GetAtt:
+          - "WatchsonApiFunctionRole"
+          - "Arn"
+      Events:
+        WatchsonApiTime:
+          Type: Api
+          Properties:
+            Path: /api/time
+            Method: ANY
+        WatchsonApiTimeUser:
+          Type: Api
+          Properties:
+            Path: /api/time/{user_id}
+            Method: ANY
+        WatchsonApiUserPreferences:
+          Type: Api
+          Properties:
+            Path: /api/user_preferences
+            Method: ANY
+        WatchsonApiUserPreferencesuser:
+          Type: Api
+          Properties:
+            Path: /api/user_preferences/{user_id}
+            Method: ANY
+
+Outputs:
+  WatchsonApi:
+    Description: "API Gateway endpoint URL for Prod stage for Watchson Api Function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
