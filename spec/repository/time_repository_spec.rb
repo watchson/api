@@ -8,12 +8,12 @@ describe TimeRepository, "TimeRepository" do
     end
 
     it "with all parameters" do
-      @time_repository.add_time("potato", "2019-01-01 01:02:03", false, true, "Batata")
+      @time_repository.add_time("potato", 2132131232, false, true, "Batata")
 
       expect(@dynamo_db).to have_received(:put_item) do |arg|
         expect(arg[:table_name]).to eq("Time")
         expect(arg[:item][:user_id]).to eq("potato")
-        expect(arg[:item][:registered_date]).to eq("2019-01-01 01:02:03")
+        expect(arg[:item][:registered_date]).to eq(2132131232)
         expect(arg[:item][:is_holiday]).to be_falsey
         expect(arg[:item][:is_leave]).to be_truthy
         expect(arg[:item][:comments]).to eq("Batata")
@@ -23,12 +23,12 @@ describe TimeRepository, "TimeRepository" do
     end
 
     it "save without comments" do
-      @time_repository.add_time("potato", "2019-01-01 01:02:03", false, true, nil)
+      @time_repository.add_time("potato", 231323213, false, true, nil)
 
       expect(@dynamo_db).to have_received(:put_item) do |arg|
         expect(arg[:table_name]).to eq("Time")
         expect(arg[:item][:user_id]).to eq("potato")
-        expect(arg[:item][:registered_date]).to eq("2019-01-01 01:02:03")
+        expect(arg[:item][:registered_date]).to eq(231323213)
         expect(arg[:item][:is_holiday]).to be_falsey
         expect(arg[:item][:is_leave]).to be_truthy
         expect(arg[:item][:created_at]).to be_truthy
@@ -40,18 +40,18 @@ describe TimeRepository, "TimeRepository" do
     it "update item" do
       result = double(:item => {
           "user_id": "potato",
-          registered_date: "2000-01-01 01:02:03",
+          registered_date: 231323213,
           is_holiday: true,
           is_leave: false
       })
       allow(@dynamo_db).to receive(:get_item) { result }
 
-      @time_repository.update_time("potato", "2019-01-01 01:02:03", false, true, "OPAAA")
+      @time_repository.update_time("potato", 231323213, false, true, "OPAAA")
 
       expect(@dynamo_db).to have_received(:put_item) do |arg|
         expect(arg[:table_name]).to eq("Time")
         expect(arg[:item][:user_id]).to eq("potato")
-        expect(arg[:item][:registered_date]).to eq("2019-01-01 01:02:03")
+        expect(arg[:item][:registered_date]).to eq(231323213)
         expect(arg[:item][:is_holiday]).to be_falsey
         expect(arg[:item][:is_leave]).to be_truthy
         expect(arg[:item][:updated_at]).to be_truthy
@@ -62,18 +62,18 @@ describe TimeRepository, "TimeRepository" do
     it "update item without null fields" do
       result = double(:item => {
           "user_id": "potato",
-          registered_date: "2000-01-01 01:02:03",
+          registered_date: 231323213,
           is_holiday: true,
           is_leave: false
       })
       allow(@dynamo_db).to receive(:get_item) { result }
 
-      @time_repository.update_time("potato", "2019-01-01 01:02:03")
+      @time_repository.update_time("potato", 231323213)
 
       expect(@dynamo_db).to have_received(:put_item) do |arg|
         expect(arg[:table_name]).to eq("Time")
         expect(arg[:item][:user_id]).to eq("potato")
-        expect(arg[:item][:registered_date]).to eq("2019-01-01 01:02:03")
+        expect(arg[:item][:registered_date]).to eq(231323213)
         expect(arg[:item][:is_holiday]).to be_truthy
         expect(arg[:item][:is_leave]).to be_falsey
         expect(arg[:item][:updated_at]).to be_truthy
@@ -87,21 +87,21 @@ describe TimeRepository, "TimeRepository" do
           key_condition_expression: "user_id = :user_id and registered_date between :start_date and :end_date",
           expression_attribute_values: {
               ":user_id" => "potato",
-              ":start_date" => "2019-01-01 01:02:03",
-              ":end_date" => "2019-01-01 10:02:03",
+              ":start_date" => 231323213,
+              ":end_date" => 231323213,
           }
       }
 
       item = {
           "user_id": "potato",
-          registered_date: "2000-01-01 01:02:03",
+          registered_date: 231323213,
           is_holiday: true,
           is_leave: false
       }
       result = double(:items => [item])
       allow(@dynamo_db).to receive(:query).with(params) { result }
 
-      items = @time_repository.list_times("potato", "2019-01-01 01:02:03", "2019-01-01 10:02:03")
+      items = @time_repository.list_times("potato", 231323213, 231323213)
 
       expect(items).to eq([item])
     end
@@ -109,7 +109,7 @@ describe TimeRepository, "TimeRepository" do
     it "when DynamoDB throws error" do
       allow(@dynamo_db).to receive(:put_item).and_raise(ArgumentError.new)
 
-      expect{@time_repository.add_time("potato", "2019-01-01 01:02:03", false, true, "Batata")}.to raise_error(ArgumentError)
+      expect{@time_repository.add_time("potato", 231323213, false, true, "Batata")}.to raise_error(ArgumentError)
     end
   end
 end
