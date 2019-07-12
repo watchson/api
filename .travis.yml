@@ -1,5 +1,7 @@
 lang: ruby
 rvm: 2.6
+dist: xenial
+sudo: required
 env:
   global:
     - PATH=$HOME/.local/bin:$PATH
