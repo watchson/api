@@ -31,6 +31,6 @@ fn my_handler(e: CustomEvent, c: Context) -> Result<CustomOutput, HandlerError> 
     }
 
     Ok(CustomOutput {
-        message: format!("Hello, {}!", e.first_name),
+        message: format!("Hellooooooooooooo, {}!", e.first_name),
     })
 }
