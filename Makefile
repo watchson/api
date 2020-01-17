@@ -1,16 +1,16 @@
-clean:
-	rm -f build/*.zip
-
 runtest:
-	bundle exec rake spec
+	cargo test
 
-build_dependencies:
-	bundle install --path build/dependencies
+build-image:
+	docker build -f Dockerfile.build . -t lambda_builder
 
-build_lambda:
-	zip -r "build/watchson_api.zip" main_controller.rb app build/dependencies
+build-bin:
+	docker run --rm -v ${PWD}:/code -v ${HOME}/.cargo/registry:/root/.cargo/registry -v ${HOME}/.cargo/git:/root/.cargo/git lambda_builder cargo build --release
 
-release: clean build_dependencies runtest build_lambda
+build-zip:
+	cp ./target/release/api ./bootstrap && zip lambda.zip bootstrap && rm bootstrap
+
+release: build-bin build-zip
 
 package: release
 	sam package  --output-template-file packaged.yaml --s3-bucket watchson-api-deploy-bucket
