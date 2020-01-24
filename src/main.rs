@@ -1,20 +1,23 @@
+use lambda_runtime::{error::HandlerError, lambda, Context};
+use serde_derive::{Deserialize, Serialize};
+use simple_logger;
+use std::collections::HashMap;
 use std::error::Error;
 
-use lambda_runtime::{error::HandlerError, lambda, Context};
-use log::error;
-use serde_derive::{Deserialize, Serialize};
-use simple_error::bail;
-use simple_logger;
-
 #[derive(Deserialize)]
-struct CustomEvent {
-    #[serde(rename = "firstName")]
-    first_name: String,
+struct ApiRequest {
+    #[serde(rename = "queryStringParameters")]
+    query_string_parameters: Option<HashMap<String, String>>,
 }
 
 #[derive(Serialize)]
-struct CustomOutput {
-    message: String,
+struct ApiResponse {
+    #[serde(rename = "statusCode")]
+    status_code: i32,
+    body: String,
+    #[serde(rename = "isBase64Encoded")]
+    is_base64_encoded: bool,
+    headers: HashMap<String, String>,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -24,13 +27,18 @@ fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn my_handler(e: CustomEvent, c: Context) -> Result<CustomOutput, HandlerError> {
-    if e.first_name == "" {
-        error!("Empty first name in request {}", c.aws_request_id);
-        bail!("Empty first name");
-    }
-
-    Ok(CustomOutput {
-        message: format!("Hellooooooooooooo, {}!", e.first_name),
+fn my_handler(request: ApiRequest, _c: Context) -> Result<ApiResponse, HandlerError> {
+    Ok(ApiResponse {
+        status_code: 200,
+        body: format!(
+            "Hellooooooooooooo, {}!",
+            request
+                .query_string_parameters
+                .unwrap_or_default()
+                .get("name")
+                .unwrap_or(&"Stranger".to_string())
+        ),
+        is_base64_encoded: false,
+        headers: HashMap::new(),
     })
 }
