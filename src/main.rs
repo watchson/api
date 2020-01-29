@@ -5,17 +5,16 @@ use std::collections::HashMap;
 use std::error::Error;
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct ApiRequest {
-    #[serde(rename = "queryStringParameters")]
     query_string_parameters: Option<HashMap<String, String>>,
 }
 
 #[derive(Serialize)]
-struct ApiResponse {
-    #[serde(rename = "statusCode")]
+#[serde(rename_all = "camelCase")]
+struct ApiResponse {    
     status_code: i32,
-    body: String,
-    #[serde(rename = "isBase64Encoded")]
+    body: String,    
     is_base64_encoded: bool,
     headers: HashMap<String, String>,
 }
