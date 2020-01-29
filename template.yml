@@ -18,7 +18,7 @@ Resources:
       Policies:
       - PolicyDocument:
           Statement:
-          - Action: ['cloudwatch:*', 'logs:*', 'xray:*', 'dynamodb:*']
+          - Action: ['cloudwatch:*', 'logs:*', 'dynamodb:*']
             Effect: Allow
             Resource: '*'
           Version: '2012-10-17'
@@ -28,15 +28,12 @@ Resources:
   WatchsonApiFunction:
     Type: "AWS::Serverless::Function"
     Properties:
-      CodeUri: build/watchson_api.zip
-      Handler: main_controller.handle_request
-      Runtime: ruby2.5
-      MemorySize: 512
+      CodeUri: target/lambda/release/api.zip
+      Handler: doesnt.matter
+      Runtime: provided
+      MemorySize: 128
       Timeout: 25
-      Role:
-        Fn::GetAtt:
-          - "WatchsonApiFunctionRole"
-          - "Arn"
+      Role: !GetAtt ["WatchsonApiFunctionRole", "Arn"]
       Events:
         WatchsonApiTime:
           Type: Api
