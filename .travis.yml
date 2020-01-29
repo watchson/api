@@ -1,5 +1,8 @@
-lang: ruby
-rvm: 2.6
+language: rust
+rust:
+  - stable
+services:
+  - docker
 dist: xenial
 sudo: required
 env:
@@ -9,7 +12,5 @@ env:
 before_install:
   - pip install --user awscli
   - pip install --user aws-sam-cli
-  - gem update --system
-  - gem install bundler
 
 script: make deploy
