@@ -31,7 +31,7 @@ fn my_handler(request: ApiRequest, _c: Context) -> Result<ApiResponse, HandlerEr
     Ok(ApiResponse {
         status_code: 200,
         body: format!(
-            "{{\"response\": \"Hellooooooooooooo, {}!\" }}",
+            "{{\"response\": \"Welcome, {}!\" }}",
             request
                 .query_string_parameters
                 .unwrap_or_default()
