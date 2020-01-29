@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/watchson/api.svg?branch=master)]
+<br />
+
 # Watchson API
 
 ## Time API
