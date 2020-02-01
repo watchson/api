@@ -16,13 +16,13 @@ use simple_logger;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    simple_logger::init_with_level(log::Level::Info)?;    
+    simple_logger::init_with_level(log::Level::Info)?;
     lambda!(api_gateway_handler);
 
     Ok(())
 }
 
-pub fn api_gateway_handler(request: ApiRequest, _c: Context) -> Result<ApiResponse, HandlerError> {    
+pub fn api_gateway_handler(request: ApiRequest, _c: Context) -> Result<ApiResponse, HandlerError> {
     let response = match request.resource.as_str() {
         "/api/time" => time_controller::put(request),
         "/api/time/{user_id}" => ApiResponse {

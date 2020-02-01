@@ -3,7 +3,7 @@ use crate::repository::time_repository;
 use crate::repository::time_repository::Time;
 use chrono::Utc;
 
-pub fn put(request: ApiRequest) -> ApiResponse {
+pub fn put(_request: ApiRequest) -> ApiResponse {
     time_repository::save(Time {
         user_id: "batata".to_string(),
         is_holiday: false,
