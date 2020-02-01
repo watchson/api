@@ -39,7 +39,7 @@ Resources:
           Type: Api
           Properties:
             Path: /api/time
-            Method: ANY
+            Method: ANY              
         WatchsonApiTimeUser:
           Type: Api
           Properties:
