@@ -1,4 +1,3 @@
-#[macro_use]
 extern crate log;
 extern crate chrono;
 extern crate rusoto_core;

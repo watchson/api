@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use rusoto_core::Region;
 use rusoto_dynamodb::{AttributeValue, DynamoDb, DynamoDbClient, PutItemInput};
 use std::collections::HashMap;
+use std::result::Result;
 
 pub struct Time {
     pub user_id: String,
@@ -12,7 +13,7 @@ pub struct Time {
     pub updated_at: DateTime<Utc>,
 }
 
-pub fn save(time: Time) {
+pub fn save(time: Time) -> Result<(), String> {
     let client = DynamoDbClient::new(Region::UsWest2);
     let mut item = HashMap::new();
     item.insert(
@@ -69,7 +70,7 @@ pub fn save(time: Time) {
     };
 
     match client.put_item(input).sync() {
-        Ok(_) => info!("worked"),
-        Err(error) => info!("err: {}", error),
-    };
+        Ok(_) => Ok(()),
+        Err(error) => Err(error.to_string()),
+    }
 }

@@ -4,7 +4,7 @@ use crate::repository::time_repository::Time;
 use chrono::Utc;
 
 pub fn put(_request: ApiRequest) -> ApiResponse {
-    time_repository::save(Time {
+    let result = time_repository::save(Time {
         user_id: "batata".to_string(),
         is_holiday: false,
         is_leave: false,
@@ -13,8 +13,15 @@ pub fn put(_request: ApiRequest) -> ApiResponse {
         updated_at: Utc::now(),
     });
 
-    ApiResponse {
-        status_code: 201,
-        ..Default::default()
+    match result {
+        Ok(_) => ApiResponse {
+            status_code: 201,
+            ..Default::default()
+        },
+        Err(error) => ApiResponse {
+            status_code: 500,
+            body: error,
+            ..Default::default()
+        },
     }
 }
