@@ -31,7 +31,7 @@ Resources:
       CodeUri: target/lambda/release/api.zip
       Handler: doesnt.matter
       Runtime: provided
-      MemorySize: 128
+      MemorySize: 512
       Timeout: 25
       Role: !GetAtt ["WatchsonApiFunctionRole", "Arn"]
       Events:
