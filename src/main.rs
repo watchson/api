@@ -23,19 +23,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 pub fn api_gateway_handler(request: ApiRequest, _c: Context) -> Result<ApiResponse, HandlerError> {
     let response = match request.resource.as_str() {
-        "/api/time" => time_controller::put(request),
-        "/api/time/{user_id}" => ApiResponse {
-            status_code: 200,
-            ..Default::default()
-        },
-        "/api/user_preferences" => ApiResponse {
-            status_code: 200,
-            ..Default::default()
-        },
-        "/api/user_preferences/{user_id}" => ApiResponse {
-            status_code: 200,
-            ..Default::default()
-        },
+        "/api/time" => time_controller::put(request),        
         _ => ApiResponse {
             status_code: 404,
             ..Default::default()

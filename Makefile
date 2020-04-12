@@ -17,4 +17,4 @@ cdk-build: cdk-install
 	npm --prefix cdk run build
 
 deploy: release cdk-build
-	cdk deploy --profile watchson --app "node cdk/index" --require-approval never
+	cdk deploy *-stack --profile watchson --app "node cdk/index" --require-approval never

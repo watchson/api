@@ -14,7 +14,7 @@ pub struct Time {
 }
 
 pub fn save(time: Time) -> Result<(), String> {
-    let client = DynamoDbClient::new(Region::UsWest2);
+    let client = DynamoDbClient::new(Region::UsEast1);
     let mut item = HashMap::new();
     item.insert(
         "created_at".to_string(),
