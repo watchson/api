@@ -23,6 +23,7 @@ jobs:
       with:
         command: build
         args: --release --target x86_64-unknown-linux-musl
+        use-cross: true
     - name: Package
       run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
     - name: Install CDK
