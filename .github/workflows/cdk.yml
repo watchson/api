@@ -24,7 +24,7 @@ jobs:
         command: build
         args: --release --all-features
     - name: Package
-      command: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
+      run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
     - name: Install CDK
       run: npm --prefix cdk install cdk
     - name: Build CDK
