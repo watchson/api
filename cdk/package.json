@@ -1,11 +1,11 @@
 {
-  "name": "gato-website",
+  "name": "watchson-api-cdk",
+  "description": "Watchson Api CDK",
+  "repository": "https://github.com/watchson/api",
+  "license": "MIT",
   "version": "0.1.0",
-  "bin": {
-    "static-website": "bin/static-website.js"
-  },
   "scripts": {
-    "clear": "rm -rf *.js && rm -rf *.d.ts && rm -rf node_modules && rm -rf cdk.out",
+    "clean": "rm -rf *.js && rm -rf *.d.ts && rm -rf node_modules && rm -rf cdk.out",
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk"
@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@aws-cdk/core": "^1.4.0",
+    "@aws-cdk/aws-lambda": "^1.4.0",
+    "@aws-cdk/aws-apigateway": "^1.4.0",
     "source-map-support": "^0.5.9"
   }
 }

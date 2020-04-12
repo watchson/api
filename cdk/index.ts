@@ -7,7 +7,7 @@ const app = new cdk.App();
 new LambdaApiStack(app, `lambda-api-stack`, { 
     env: { 
         region: 'us-east-1',
-        account: ''
+        account: '064638649248'        
     }
 });
 

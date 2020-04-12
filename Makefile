@@ -10,17 +10,11 @@ build-bin:
 
 release: build-bin
 
-package: release
-	sam package  --output-template-file packaged.yaml --s3-bucket watchson-api-deploy-bucket
-
-deploy: package
-	sam deploy --template-file packaged.yaml --stack-name watchson-api --capabilities CAPABILITY_NAMED_IAM
-
 cdk-install:
 	npm --prefix cdk install cdk
 
-cdk-build:
+cdk-build: cdk-install
 	npm --prefix cdk run build
 
-cdk-deploy:
-	npm --prefix cdk cdk deploy --app "node cdk/index"
+deploy: release cdk-build
+	cdk deploy --profile watchson --app "node cdk/index" --require-approval never
