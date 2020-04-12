@@ -22,7 +22,7 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: build
-        args: --release --all-features
+        args: --release --target x86_64-unknown-linux-musl
     - name: Package
       run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
     - name: Install CDK
