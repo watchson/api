@@ -15,3 +15,12 @@ package: release
 
 deploy: package
 	sam deploy --template-file packaged.yaml --stack-name watchson-api --capabilities CAPABILITY_NAMED_IAM
+
+cdk-install:
+	npm --prefix cdk install cdk
+
+cdk-build:
+	npm --prefix cdk run build
+
+cdk-deploy:
+	npm --prefix cdk cdk deploy --app "node cdk/index"

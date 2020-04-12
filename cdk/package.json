@@ -1,0 +1,22 @@
+{
+  "name": "gato-website",
+  "version": "0.1.0",
+  "bin": {
+    "static-website": "bin/static-website.js"
+  },
+  "scripts": {
+    "clear": "rm -rf *.js && rm -rf *.d.ts && rm -rf node_modules && rm -rf cdk.out",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.0",
+    "aws-cdk": "^1.4.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@aws-cdk/core": "^1.4.0",
+    "source-map-support": "^0.5.9"
+  }
+}
