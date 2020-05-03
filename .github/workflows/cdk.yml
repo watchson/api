@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: $HOME/.cargo/bin/cargo build --release
     - name: Package
-      run: mkdir target/lambda && mkdir target/lambda/release && mv target/release/api target/lambda/release/bootstrap && zip target/lambda/release/api.zip target/lambda/release/bootstrap
+      run: mkdir target/lambda && mkdir target/lambda/release && mv target/release/api target/lambda/release/bootstrap && zip -j target/lambda/release/api.zip target/lambda/release/bootstrap
     - name: Install CDK
       run: npm --prefix cdk install cdk
     - name: Build CDK
