@@ -31,7 +31,7 @@ jobs:
           && curl -fsSL https://get.docker.com -o get-docker.sh \
           && sh get-docker.sh
     - name: Build
-      run: docker run -v ${PWD}:/code softprops/lambda-rust
+      run: docker run -v /__w/api/api:/code softprops/lambda-rust
     - name: Install CDK
       run: npm --prefix cdk install cdk
     - name: Build CDK
