@@ -14,10 +14,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}        
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: ${{ matrix.node-version }}        
     - name: Install System Dependencies
       run: |
           sudo apt-get update && apt-get install -y --no-install-recommends \
@@ -28,24 +28,24 @@ jobs:
           && apt-get clean -y \
           && curl -fsSL https://get.docker.com -o get-docker.sh \
           && sh get-docker.sh
-    - name: Build
-      uses: actions-rs/cargo@v1
-      with:
-        command: build
-        args: --release --target x86_64-unknown-linux-musl
-        use-cross: true
-      env:
-        PKG_CONFIG_ALLOW_CROSS: 1
-    - name: Package
-      run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
-    - name: Install CDK
-      run: npm --prefix cdk install cdk
-    - name: Build CDK
-      run: npm run build --prefix cdk
-    - name: AWS CDK Deploy
-      uses: MikeBild/aws-cdk-js-github-action@1.0.0
-      with:
-        args: deploy *-stack --app 'node cdk/index' --require-approval=never
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    # - name: Build
+    #   uses: actions-rs/cargo@v1
+    #   with:
+    #     command: build
+    #     args: --release --target x86_64-unknown-linux-musl
+    #     use-cross: true
+    #   env:
+    #     PKG_CONFIG_ALLOW_CROSS: 1
+    # - name: Package
+    #   run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
+    # - name: Install CDK
+    #   run: npm --prefix cdk install cdk
+    # - name: Build CDK
+    #   run: npm run build --prefix cdk
+    # - name: AWS CDK Deploy
+    #   uses: MikeBild/aws-cdk-js-github-action@1.0.0
+    #   with:
+    #     args: deploy *-stack --app 'node cdk/index' --require-approval=never
+    #   env:
+    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
