@@ -30,6 +30,10 @@ jobs:
           && apt-get clean -y \
           && curl -fsSL https://get.docker.com -o get-docker.sh \
           && sh get-docker.sh
+    - name: ls
+      run: ls
+    - name: pwd
+      run: pwd
     - name: Build
       run: make release
     - name: Install CDK
