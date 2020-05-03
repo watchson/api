@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}        
     - name: Install System Dependencies
-      run: apt-get update && sudo apt-get install -y --no-install-recommends libxml2-dev libssl-dev
+      run: apt-get update && sudo apt-get install -y --no-install-recommends libxml2-dev libssl-dev pkg-config
     - name: Install Rust
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
     - name: Build
