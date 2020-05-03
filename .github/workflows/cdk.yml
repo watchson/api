@@ -21,15 +21,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}        
     - name: Install System Dependencies
-      run: |
-          apt-get update && sudo apt-get install -y --no-install-recommends \
-          docker \
-          git \
-          libxml2-dev \
-          libssl-dev \          
-          && curl -fsSL https://get.docker.com -o get-docker.sh \
-          && sh get-docker.sh \
-          && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+      run: apt-get update && sudo apt-get install -y --no-install-recommends libxml2-dev libssl-dev
+    - name: Install Rust
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
     - name: Build
       run: cargo build --release
     - name: Package
