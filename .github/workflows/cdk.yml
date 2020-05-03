@@ -18,6 +18,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}        
+    - name: Install System Dependencies
+      run: |
+          sudo apt-get update && apt-get install -y --no-install-recommends \
+          docker \
+          git \
+          libxml2-dev \
+          libssl-dev \
+          && apt-get clean -y \
+          && curl -fsSL https://get.docker.com -o get-docker.sh \
+          && sh get-docker.sh
     - name: Build
       uses: actions-rs/cargo@v1
       with:
