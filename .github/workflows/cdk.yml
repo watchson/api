@@ -23,9 +23,9 @@ jobs:
     - name: Install System Dependencies
       run: apt-get update && sudo apt-get install -y --no-install-recommends libxml2-dev libssl-dev
     - name: Install Rust
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && source $HOME/.cargo/env
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
     - name: Build
-      run: cargo build --release
+      run: $HOME/.cargo/bin/cargo build --release
     - name: Package
       run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
     - name: Install CDK
