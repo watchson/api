@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     container:
-      image: rstudio/r-base:3.6-xenial
+      image: lambci/lambda:build-provided
     strategy:
       matrix:
         node-version: [12.x]
@@ -29,9 +29,12 @@ jobs:
           libssl-dev \
           && apt-get clean -y \
           && curl -fsSL https://get.docker.com -o get-docker.sh \
-          && sh get-docker.sh
+          && sh get-docker.sh \
+          && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
     - name: Build
-      run: docker run -v /__w/api/api:/code softprops/lambda-rust
+      run: cargo build --release
+    - name: Package
+      run: mkdir target/lambda && mkdir target/lambda/release && zip target/lambda/release/api.zip target/release/api
     - name: Install CDK
       run: npm --prefix cdk install cdk
     - name: Build CDK
