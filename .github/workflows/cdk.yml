@@ -8,14 +8,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:latest
+      image: lambci/lambda:build-provided
     strategy:
       matrix:
         node-version: [12.x]
 
     steps:
-    - name: Install System Dependencies
-      run: DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libxml2-dev libssl-dev pkg-config curl ca-certificates build-essential zip
+    # - name: Install System Dependencies
+    #   run: DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libxml2-dev libssl-dev pkg-config curl ca-certificates build-essential zip
     - name: Install Rust
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
     - name: Use Node.js ${{ matrix.node-version }}
