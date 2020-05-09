@@ -21,6 +21,7 @@ pub struct ApiRequest {
     pub path_parameters: Option<HashMap<String, String>>,
     pub query_string_parameters: Option<HashMap<String, String>>,
     pub multi_value_query_string_parameters: Option<HashMap<String, HashMap<String, String>>>,
+    pub body: String,
 }
 
 #[derive(Serialize)]
